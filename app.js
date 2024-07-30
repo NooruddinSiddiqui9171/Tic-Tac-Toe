@@ -45,7 +45,7 @@ boxes.forEach((box) => {
         box.disabled = true;
         count++;
         checkWinner();
-        checkdraw();
+        //checkdraw();
     })
 });
 
@@ -89,6 +89,9 @@ const checkWinner = () => {
             if (position1 === position2 && position2 === position3) {
                 showWinner(position1);
             }
+        }
+        else{
+            checkdraw();
         }
 
     }
