@@ -3,7 +3,11 @@ let resetbtn = document.querySelector("#reset");
 let newGameBtn = document.querySelector("#new-game-btn");
 let resetBtn = document.querySelector("#reset");
 let winPara = document.querySelector("#win-msg");
-let msgcontainer = document.querySelector(".msg-container"); 
+let msgcontainer = document.querySelector(".msg-container");
+let oSound = new Audio("./sound/Osound.wav");
+let xSound = new Audio("./sound/Xsound.wav");
+let winSound = new Audio("./sound/win.wav");
+let drawSound = new Audio("./sound/draw.wav");
 
 let turnO = true;
 let count = 0;
@@ -18,7 +22,7 @@ const winPattern = [
     [0, 4, 8]
 ];
 
-const resetGame=()=>{
+const resetGame = () => {
     turnO = true;
     count = 0;
     enableBoxes();
@@ -29,10 +33,12 @@ boxes.forEach((box) => {
     box.addEventListener("click", () => {
         if (turnO) {
             box.innerHTML = "O";
+            oSound.play();
             box.style.color = "red";
             turnO = false;
         } else {
             box.innerHTML = "X";
+            xSound.play();
             box.style.color = "black";
             turnO = true;
         }
@@ -43,33 +49,32 @@ boxes.forEach((box) => {
     })
 });
 
-const checkdraw=() =>{
-    if(count === 9)
-    {
+const checkdraw = () => {
+    if (count === 9) {
+        drawSound.play();
         winPara.innerText = `Game Draw`;
         msgcontainer.classList.remove("hide");
     }
 }
 
-const disableBoxes=() =>{
-    for(let box of boxes)
-    {
+const disableBoxes = () => {
+    for (let box of boxes) {
         box.disabled = true;
     }
-} 
+}
 
-const enableBoxes=() =>{
-    for(let box of boxes)
-    {
+const enableBoxes = () => {
+    for (let box of boxes) {
         box.disabled = false;
         box.innerText = "";
     }
-} 
+}
 
-const showWinner = (winner) =>{
-   winPara.innerText = `Congratulations, Winner is ${winner}`;
-   msgcontainer.classList.remove("hide");
-   disableBoxes();
+const showWinner = (winner) => {
+    winSound.play();
+    winPara.innerText = `Congratulations, Winner is ${winner}`;
+    msgcontainer.classList.remove("hide");
+    disableBoxes();
 }
 
 
@@ -80,10 +85,8 @@ const checkWinner = () => {
         let position2 = boxes[pattern[1]].innerText;
         let position3 = boxes[pattern[2]].innerText;
 
-        if(position1 != "" && position2 != "" && position3 != "")
-        {
-            if(position1 === position2 && position2 === position3)
-            {
+        if (position1 != "" && position2 != "" && position3 != "") {
+            if (position1 === position2 && position2 === position3) {
                 showWinner(position1);
             }
         }
